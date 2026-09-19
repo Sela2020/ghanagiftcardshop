@@ -19,7 +19,7 @@
   'use strict';
 
   /* ========================================================================
-     1. LOADER  (top progress bar + optional centered overlay)
+     1. LOADER (top progress bar + optional centered overlay)
      ======================================================================== */
   let loaderEl = null;
   let loaderBar = null;
@@ -95,10 +95,7 @@
   }
 
   /* ========================================================================
-     4. NAVIGATION
-     ======================================================================== */
-    /* ========================================================================
-     4a. DYNAMIC PAGE SCRIPT LOADER
+     4. DYNAMIC PAGE SCRIPT LOADER
      ------------------------------------------------------------------------
      When navigating to a page whose script isn't loaded yet, inject it.
      Once loaded, PageInit.<name> is registered and stays registered for the
@@ -134,13 +131,22 @@
       loadedScripts[pageName].then(resolve);
     });
   }
-  
-     let isNavigating = false;
+
+  /* ========================================================================
+     5. NAVIGATION
+     ======================================================================== */
+  let isNavigating = false;
 
   async function navigate(url, pushState) {
     if (isNavigating) return;
     isNavigating = true;
     startLoader();
+
+    // Close any open modal (cart prompt, codes modal, etc.) so its backdrop
+    // doesn't sit on top of the new page after the swap.
+    if (window.GC && typeof window.GC.closeAllModals === 'function') {
+      window.GC.closeAllModals();
+    }
 
     try {
       const response = await fetch(url, { credentials: 'same-origin' });
@@ -188,7 +194,7 @@
       // Scroll to top
       window.scrollTo({ top: 0, behavior: 'instant' });
 
-            // Ensure the page's script is loaded, then run its init
+      // Ensure the page's script is loaded, then run its init
       const pageName = currentMain.dataset.page;
       if (pageName) {
         await ensurePageScript(pageName);
@@ -214,7 +220,7 @@
   }
 
   /* ========================================================================
-     5. LINK INTERCEPTION
+     6. LINK INTERCEPTION
      Catches internal .html clicks and routes them through navigate()
      ======================================================================== */
   function isInternalLink(link) {
@@ -249,7 +255,7 @@
   });
 
   /* ========================================================================
-     6. BACK / FORWARD BUTTONS
+     7. BACK / FORWARD BUTTONS
      ======================================================================== */
   window.addEventListener('popstate', function (e) {
     const url = (e.state && e.state.url) || window.location.pathname;
@@ -257,16 +263,21 @@
   });
 
   /* ========================================================================
-     7. INITIAL PAGE LOAD
-     On first load, we didn't navigate — the browser did. Just run the
-     current page's init function so the page renders.
+     8. INITIAL PAGE LOAD
+     On first load, we didn't navigate — the browser did. Load the page's
+     script if needed, then run its init.
      ======================================================================== */
-  function initInitialPage() {
+  async function initInitialPage() {
     const main = document.getElementById('main');
     const pageName = main && main.dataset.page;
-    if (pageName && window.PageInit && typeof window.PageInit[pageName] === 'function') {
-      window.PageInit[pageName]();
+
+    if (pageName) {
+      await ensurePageScript(pageName);
+      if (window.PageInit && typeof window.PageInit[pageName] === 'function') {
+        window.PageInit[pageName]();
+      }
     }
+
     // Set the active nav link based on the initial URL
     const path = window.location.pathname.split('/').pop() || 'index.html';
     setActiveNav(path);
@@ -279,7 +290,7 @@
   }
 
   /* ========================================================================
-     8. PUBLIC API
+     9. PUBLIC API
      ======================================================================== */
   window.Router = {
     navigate: navigate
