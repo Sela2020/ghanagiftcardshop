@@ -3,15 +3,17 @@
    --------------------------------------------------------------------------
    Loaded by every page. Provides:
 
-     1. CONFIG       — storage keys, currency
-     2. STORAGE      — safe localStorage wrappers
-     3. FORMATTERS   — currency, initials, HTML escape
-     4. THEME        — Light / Dark / System cycle with persistence
-     5. CART         — localStorage cart
-     6. TOASTS       — non-blocking notifications
-     6b. CART PROMPT — the "Added to your cart" modal
-     7. INIT         — global bindings
-     8. PUBLIC API   — window.GC
+     1. CONFIG            — storage keys, currency
+     2. STORAGE           — safe localStorage wrappers
+     3. FORMATTERS        — currency, initials, HTML escape
+     4. THEME             — Light / Dark / System cycle with persistence
+     5. CART              — localStorage cart
+     6. TOASTS            — non-blocking notifications
+     7. CART PROMPT       — the "Added to your cart" modal
+     8. SMOOTH ANCHORS    — in-page #link scrolling with header offset
+     9. CLOSE ALL MODALS  — force-cleanup, called by the router
+    10. INIT              — global bindings
+    11. PUBLIC API        — window.GC
 
    Exposes everything page scripts need via window.GC. Page-specific logic
    (rendering, form validation, etc.) lives in /js/<page>.js.
@@ -254,7 +256,7 @@
   }
 
   /* ========================================================================
-     6b. CART PROMPT (modal)
+     7. CART PROMPT (modal)
      ------------------------------------------------------------------------
      After adding to cart, the page blurs and this dialog appears. It:
        • captures keyboard focus (Tab cycles inside the dialog)
@@ -389,6 +391,16 @@
     backdrop.querySelector('[data-action="dismiss"]')
       .addEventListener('click', dismissCartPrompt);
 
+    // "Go to cart" closes the modal first, then lets the link navigate.
+    // Without this, the backdrop would linger on the next page because the
+    // router only swaps <main> and the backdrop lives on <body>.
+    const goToCart = backdrop.querySelector('a[href="cart.html"]');
+    if (goToCart) {
+      goToCart.addEventListener('click', function () {
+        dismissCartPrompt();
+      });
+    }
+
     // Click outside the dialog (on the blurred backdrop) also closes it
     backdrop.addEventListener('click', function (e) {
       if (e.target === backdrop) dismissCartPrompt();
@@ -401,8 +413,9 @@
     const firstBtn = backdrop.querySelector('[data-action="dismiss"]');
     if (firstBtn) firstBtn.focus();
   }
+
   /* ========================================================================
-     6c. SMOOTH ANCHOR SCROLL
+     8. SMOOTH ANCHOR SCROLL
      ------------------------------------------------------------------------
      Handles clicks on in-page anchors (href="#section"). Scrolls to the
      target with an offset for the fixed header. Runs on every page.
@@ -439,8 +452,35 @@
       }
     });
   }
+
   /* ========================================================================
-     7. INIT (global bindings only — page scripts handle the rest)
+     9. CLOSE ALL MODALS
+     ------------------------------------------------------------------------
+     Force-removes any open modal backdrop. Called by the router before
+     navigation so a lingering overlay never sits on top of the new page.
+     Also exposed as GC.closeAllModals() for page scripts.
+     ======================================================================== */
+  function closeAllModals() {
+    // Cart prompt (uses module state, so clean up properly)
+    if (activePrompt) {
+      if (activePrompt.parentNode) activePrompt.parentNode.removeChild(activePrompt);
+      activePrompt = null;
+      document.removeEventListener('keydown', onPromptKeydown);
+      promptReturnFocus = null;
+    }
+
+    // Any other modal backdrops that might be lingering
+    document.querySelectorAll(
+      '.cart-prompt-backdrop, .codes-modal-backdrop, .checkout-processing'
+    ).forEach(function (el) {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    });
+
+    document.body.classList.remove('is-modal-open');
+  }
+
+  /* ========================================================================
+     10. INIT (global bindings only — page scripts handle the rest)
      ======================================================================== */
   function bindNav() {
     const toggle = document.getElementById('navToggle');
@@ -465,7 +505,7 @@
     if (el) el.textContent = new Date().getFullYear();
   }
 
-    function init() {
+  function init() {
     initTheme();
     bindNav();
     setFooterYear();
@@ -480,7 +520,7 @@
   }
 
   /* ========================================================================
-     8. PUBLIC API
+     11. PUBLIC API
      ======================================================================== */
   window.GC = {
     KEYS: KEYS,
@@ -508,6 +548,7 @@
     // UI
     showToast: showToast,
     showCartPrompt: showCartPrompt,
+    closeAllModals: closeAllModals,
 
     // Theme
     setTheme: setTheme,
