@@ -19,14 +19,8 @@
 <body>
 <div class="bg-grid-ambient" aria-hidden="true"></div>
 
-<!-- ==========================================================================
-     HEADER (fixed, injected by js/header.js)
-     ========================================================================== -->
 <header id="siteHeader" class="site-header"></header>
 
-<!-- ==========================================================================
-     MAIN
-     ========================================================================== -->
 <main id="main" data-page="dashboard">
 
   <!-- ---------- Page head ---------- -->
@@ -148,21 +142,8 @@
 
 </main>
 
-<!-- ==========================================================================
-     FOOTER (fixed, injected by js/footer.js)
-     ========================================================================== -->
 <footer id="siteFooter" class="site-footer"></footer>
 
-<!-- ==========================================================================
-     SCRIPTS
-     Load order matters:
-       header.js    → renders the header into #siteHeader
-       footer.js    → renders the footer into #siteFooter
-       main.js      → defines window.GC (cart, theme, toasts, modal)
-       products.js  → defines window.CATALOG (product data)
-       dashboard.js → registers window.PageInit.dashboard (this page)
-       router.js    → intercepts internal links, swaps <main>
-     ========================================================================== -->
 <script src="js/header.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/main.js"></script>
