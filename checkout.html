@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Ghana Gift Card Shop</title>
+<meta name="description" content="Complete your gift card order securely with Paystack. MoMo, Telecel Cash, AT Money, Visa and Mastercard accepted.">
+<meta name="theme-color" content="#0B0B0E">
+
+<link rel="icon" type="image/png" href="images/ggcs-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="bg-grid-ambient" aria-hidden="true"></div>
+
+<header id="siteHeader" class="site-header"></header>
+
+<main id="main" data-page="checkout">
+
+  <!-- ---------- Page head ---------- -->
+  <div class="page-head">
+    <div class="container">
+      <span class="page-head__eyebrow">Almost done</span>
+      <h1 class="page-head__title">Checkout</h1>
+      <p class="page-head__sub">
+        Confirm your details and we'll send your codes within 3 hours.
+      </p>
+    </div>
+  </div>
+
+  <div class="container section">
+
+    <!-- ---------- Empty state ---------- -->
+    <div class="checkout-empty" id="checkoutEmpty" hidden>
+      <div class="checkout-empty__icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </div>
+      <h2 class="checkout-empty__title">Your cart is empty</h2>
+      <p class="checkout-empty__text">
+        Add a gift card to your cart before checking out.
+      </p>
+      <a href="shop.html" class="btn btn--primary">Browse Gift Cards</a>
+    </div>
+
+    <!-- ---------- Main layout ---------- -->
+    <div class="checkout-layout" id="checkoutLayout">
+
+      <!-- ============ LEFT: FORM ============ -->
+      <div>
+
+        <a href="cart.html" class="checkout-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to cart
+        </a>
+
+        <!-- Alert -->
+        <div class="checkout-alert" id="checkoutAlert" role="alert" hidden></div>
+
+        <form id="checkoutForm" novalidate>
+
+          <!-- ---------- Contact details ---------- -->
+          <section class="checkout-section" aria-labelledby="contactHeading">
+            <div class="checkout-section__head">
+              <span class="checkout-section__num" aria-hidden="true">1</span>
+              <h2 class="checkout-section__title" id="contactHeading">
+                Contact details
+              </h2>
+            </div>
+
+            <div class="checkout-form-grid">
+
+              <div class="form-group form-group--full">
+                <label class="form-label" for="coName">Full name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="coName"
+                  name="name"
+                  placeholder="Kwame Mensah"
+                  autocomplete="name"
+                  required>
+                <span class="form-error" id="coNameError" role="alert"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="coEmail">Email address</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="coEmail"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  inputmode="email"
+                  required>
+                <span class="form-error" id="coEmailError" role="alert"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="coPhone">Phone number</label>
+                <input
+                  type="tel"
+                  class="form-input"
+                  id="coPhone"
+                  name="phone"
+                  placeholder="024 533 2299"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  required>
+                <span class="form-error" id="coPhoneError" role="alert"></span>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ---------- Delivery method ---------- -->
+          <section class="checkout-section" aria-labelledby="deliveryHeading">
+            <div class="checkout-section__head">
+              <span class="checkout-section__num" aria-hidden="true">2</span>
+              <h2 class="checkout-section__title" id="deliveryHeading">
+                Delivery method
+              </h2>
+            </div>
+
+            <div class="delivery-options" role="radiogroup" aria-label="Delivery method">
+
+              <label class="delivery-option">
+                <input type="radio" name="delivery" value="Email" checked>
+                <span class="delivery-option__inner">
+                  <span class="delivery-option__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <path d="m22 6-10 7L2 6"></path>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="delivery-option__title">Email</span>
+                    <span class="delivery-option__text">
+                      Codes sent to your inbox, ready to copy.
+                    </span>
+                  </span>
+                </span>
+              </label>
+
+              <label class="delivery-option">
+                <input type="radio" name="delivery" value="WhatsApp">
+                <span class="delivery-option__inner">
+                  <span class="delivery-option__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="delivery-option__title">WhatsApp</span>
+                    <span class="delivery-option__text">
+                      Codes sent to the number above.
+                    </span>
+                  </span>
+                </span>
+              </label>
+
+            </div>
+          </section>
+
+          <!-- ---------- Payment ---------- -->
+          <section class="checkout-section" aria-labelledby="paymentHeading">
+            <div class="checkout-section__head">
+              <span class="checkout-section__num" aria-hidden="true">3</span>
+              <h2 class="checkout-section__title" id="paymentHeading">
+                Payment
+              </h2>
+            </div>
+
+            <div class="payment-info">
+              <div class="payment-info__head">
+                <span class="payment-info__logo" aria-hidden="true">PS</span>
+                <div>
+                  <div class="payment-info__title">Secure payment by Paystack</div>
+                  <div class="payment-info__sub">
+                    You'll choose your method on the next screen.
+                  </div>
+                </div>
+              </div>
+
+              <div class="payment-info__methods">
+                <span class="pay-chip">
+                  <span class="pay-chip__dot" style="background:#FFCC00"></span>
+                  MTN MoMo
+                </span>
+                <span class="pay-chip">
+                  <span class="pay-chip__dot" style="background:#E60000"></span>
+                  Telecel Cash
+                </span>
+                <span class="pay-chip">
+                  <span class="pay-chip__dot" style="background:#0067B1"></span>
+                  AT Money
+                </span>
+                <span class="pay-chip">
+                  <span class="pay-chip__dot" style="background:#1A1F71"></span>
+                  Visa
+                </span>
+                <span class="pay-chip">
+                  <span class="pay-chip__dot" style="background:#EB001B"></span>
+                  Mastercard
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- Submit ---------- -->
+          <button type="submit" class="btn btn--primary btn--lg btn--block"
+                  id="coSubmit">
+            Place order
+          </button>
+
+          <p class="u-text-muted u-text-sm u-mt-4"
+             style-placeholder-terms>
+            By placing this order you agree to our
+            <a href="terms.html">Terms and Conditions</a>, including the
+            final sale policy for digital codes.
+          </p>
+
+        </form>
+      </div>
+
+      <!-- ============ RIGHT: SUMMARY ============ -->
+      <aside class="checkout-summary" aria-labelledby="summaryHeading">
+        <h2 class="checkout-summary__title" id="summaryHeading">
+          Order Summary
+        </h2>
+
+        <div class="summary-items" id="summaryItems"></div>
+
+        <dl class="summary-rows">
+          <div class="cart-summary__row">
+            <dt>Subtotal <span class="u-text-muted" id="summaryCount"></span></dt>
+            <dd id="summarySubtotal">GH₵0.00</dd>
+          </div>
+          <div class="cart-summary__row">
+            <dt>Processing fee</dt>
+            <dd>GH₵0.00</dd>
+          </div>
+          <div class="cart-summary__row cart-summary__row--free">
+            <dt>Delivery</dt>
+            <dd>Free · Within 3 hours</dd>
+          </div>
+        </dl>
+
+        <dl class="summary-total">
+          <dt>Total</dt>
+          <dd id="summaryTotal">GH₵0.00</dd>
+        </dl>
+
+        <div class="summary-secure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Secured by Paystack
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+<footer id="siteFooter" class="site-footer"></footer>
+
+<script src="js/header.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/whatsapp.js"></script>
+<script src="js/router.js"></script>
+
+</body>
+</html>

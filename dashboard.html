@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Dashboard — Ghana Gift Card Shop</title>
+<meta name="description" content="Track your gift card orders and view your codes.">
+<meta name="theme-color" content="#0B0B0E">
+
+<link rel="icon" type="image/png" href="images/ggcs-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="bg-grid-ambient" aria-hidden="true"></div>
+
+<!-- ==========================================================================
+     HEADER (fixed, injected by js/header.js)
+     ========================================================================== -->
+<header id="siteHeader" class="site-header"></header>
+
+<!-- ==========================================================================
+     MAIN
+     ========================================================================== -->
+<main id="main" data-page="dashboard">
+
+  <!-- ---------- Page head ---------- -->
+  <div class="page-head">
+    <div class="container">
+      <span class="page-head__eyebrow">Account</span>
+      <h1 class="page-head__title" id="dashGreeting">Your Dashboard</h1>
+      <p class="page-head__sub" id="dashSub">
+        Track your orders and view your gift card codes.
+      </p>
+    </div>
+  </div>
+
+  <div class="container section">
+
+    <!-- ---------- Welcome toolbar ---------- -->
+    <div class="dash-welcome">
+      <p class="dash-welcome__sub">
+        Everything you've bought, with the latest status.
+      </p>
+      <div class="dash-welcome__actions">
+        <button type="button" class="btn btn--secondary btn--sm" id="dashClearDemo">
+          Clear demo data
+        </button>
+        <button type="button" class="btn btn--primary btn--sm" id="dashRefresh">
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- ---------- Stats ---------- -->
+    <section aria-labelledby="statsHeading">
+      <h2 id="statsHeading" class="u-visually-hidden">Order summary</h2>
+
+      <div class="stats-grid" id="dashStats">
+        <div class="stat stat--accent">
+          <span class="stat__label">Total orders</span>
+          <span class="stat__value stat__value--accent" id="statTotal">—</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Total spent</span>
+          <span class="stat__value" id="statSpent">—</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Pending</span>
+          <span class="stat__value stat__value--warning" id="statPending">—</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Completed</span>
+          <span class="stat__value stat__value--success" id="statDone">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Order history ---------- -->
+    <section aria-labelledby="ordersHeading">
+
+      <div class="dash-toolbar">
+        <div>
+          <h2 id="ordersHeading">Order History</h2>
+        </div>
+        <div class="dash-filters" id="dashFilters" role="group" aria-label="Filter orders">
+          <span class="dash-filters__label">Filter</span>
+          <button type="button" class="dash-chip is-active" data-status="all"       aria-pressed="true">All</button>
+          <button type="button" class="dash-chip"           data-status="pending"   aria-pressed="false">Pending</button>
+          <button type="button" class="dash-chip"           data-status="completed" aria-pressed="false">Completed</button>
+          <button type="button" class="dash-chip"           data-status="cancelled" aria-pressed="false">Cancelled</button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="dash-loader" id="dashLoader" role="status" aria-live="polite">
+        <div class="dash-loader__spinner"></div>
+        <span>Loading your orders…</span>
+      </div>
+
+      <!-- Table -->
+      <div class="orders-wrap" id="ordersWrap" hidden>
+        <table class="orders-table">
+          <caption class="u-visually-hidden">Your gift card order history</caption>
+          <thead>
+            <tr>
+              <th scope="col">Order</th>
+              <th scope="col">Date</th>
+              <th scope="col">Items</th>
+              <th scope="col" class="is-numeric">Cards</th>
+              <th scope="col" class="is-numeric">Total</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="is-numeric">
+                <span class="u-visually-hidden">Codes</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty -->
+      <div class="dash-empty" id="dashEmpty" hidden>
+        <div class="dash-empty__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+        <h2 class="dash-empty__title">No orders yet</h2>
+        <p class="dash-empty__text" id="dashEmptyText">
+          Your orders will appear here as soon as you place your first one.
+        </p>
+        <a href="shop.html" class="btn btn--primary">Browse Gift Cards</a>
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<!-- ==========================================================================
+     FOOTER (fixed, injected by js/footer.js)
+     ========================================================================== -->
+<footer id="siteFooter" class="site-footer"></footer>
+
+<!-- ==========================================================================
+     SCRIPTS
+     Load order matters:
+       header.js    → renders the header into #siteHeader
+       footer.js    → renders the footer into #siteFooter
+       main.js      → defines window.GC (cart, theme, toasts, modal)
+       products.js  → defines window.CATALOG (product data)
+       dashboard.js → registers window.PageInit.dashboard (this page)
+       router.js    → intercepts internal links, swaps <main>
+     ========================================================================== -->
+<script src="js/header.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/router.js"></script>
+
+</body>
+</html>

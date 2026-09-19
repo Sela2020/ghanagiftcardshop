@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Ghana Gift Card Shop</title>
+<meta name="description" content="Review your gift card order and proceed to checkout securely with Paystack.">
+<meta name="theme-color" content="#0B0B0E">
+
+<link rel="icon" type="image/png" href="images/ggcs-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="bg-grid-ambient" aria-hidden="true"></div>
+
+<!-- ==========================================================================
+     HEADER (fixed)
+     ========================================================================== -->
+<header id="siteHeader" class="site-header"></header>
+
+<!-- ==========================================================================
+     MAIN
+     ========================================================================== -->
+<main id="main" data-page="cart">
+
+  <!-- ---------- Page head ---------- -->
+  <div class="page-head">
+    <div class="container">
+      <span class="page-head__eyebrow">Your order</span>
+      <h1 class="page-head__title">Shopping Cart</h1>
+      <p class="page-head__sub">
+        Review your gift cards below. Everything is priced in Ghana Cedis.
+      </p>
+    </div>
+  </div>
+
+  <div class="container section">
+
+    <!-- ---------- CART LAYOUT ---------- -->
+    <div class="cart-layout">
+
+      <!-- Items column -->
+      <section aria-labelledby="cartItemsHeading">
+
+        <!-- Toolbar -->
+        <div class="cart-toolbar">
+          <span class="cart-toolbar__count" id="cartItemCount">
+            <strong>0</strong> items in your cart
+          </span>
+          <button type="button" class="cart-toolbar__clear" id="clearCartBtn">
+            Clear cart
+          </button>
+        </div>
+
+        <h2 id="cartItemsHeading" class="u-visually-hidden">Cart items</h2>
+
+        <!-- Items list — populated by js/cart.js -->
+        <div class="cart-items" id="cartList"></div>
+
+        <!-- Empty state -->
+        <div class="cart-empty" id="cartEmpty" hidden>
+          <div class="cart-empty__icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </div>
+          <h2 class="cart-empty__title">Your cart is empty</h2>
+          <p class="cart-empty__text">
+            Pick a gift card, choose an amount, and it'll show up here.
+          </p>
+          <a href="shop.html" class="btn btn--primary">Browse Gift Cards</a>
+        </div>
+
+      </section>
+
+      <!-- Summary column -->
+      <aside class="cart-summary" id="cartSummary" aria-labelledby="summaryHeading">
+        <h2 class="cart-summary__title" id="summaryHeading">Order Summary</h2>
+
+        <dl class="cart-summary__rows">
+          <div class="cart-summary__row">
+            <dt>Subtotal</dt>
+            <dd id="summarySubtotal">GH₵0.00</dd>
+          </div>
+          <div class="cart-summary__row">
+            <dt>Processing fee</dt>
+            <dd>GH₵0.00</dd>
+          </div>
+          <div class="cart-summary__row cart-summary__row--free">
+            <dt>Delivery</dt>
+            <dd>Free · Instant</dd>
+          </div>
+        </dl>
+
+        <dl class="cart-summary__total">
+          <dt>Total</dt>
+          <dd id="summaryTotal">GH₵0.00</dd>
+        </dl>
+
+        <div class="cart-summary__actions">
+          <a href="checkout.html" class="btn btn--primary btn--lg btn--block">
+            Proceed to Checkout
+          </a>
+          <a href="shop.html" class="btn btn--secondary btn--block">
+            Continue shopping
+          </a>
+        </div>
+
+        <div class="cart-summary__secure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Secured by Paystack
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ==========================================================================
+     FOOTER (fixed)
+     ========================================================================== -->
+<footer id="siteFooter" class="site-footer"></footer>
+
+<!-- ==========================================================================
+     SCRIPTS
+     main.js      → defines window.GC (cart storage, toasts, theme, etc.)
+     products.js  → defines window.CATALOG (used for brand colours)
+     cart.js      → this page's logic
+     ========================================================================== -->
+<script src="js/header.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script src="js/index.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/router.js"></script>
+
+</body>
+</html>

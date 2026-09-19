@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Gift Cards — Ghana Gift Card Shop</title>
+<meta name="description" content="Browse PlayStation, Xbox, Nintendo, Steam, Roblox, Google Play and Apple gift cards. Prices in GHS, delivered instantly.">
+<meta name="theme-color" content="#0B0B0E">
+
+<link rel="icon" type="image/png" href="images/ggcs-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="bg-grid-ambient" aria-hidden="true"></div>
+
+<header id="siteHeader" class="site-header"></header>
+
+<main id="main" data-page="shop">
+
+  <!-- ---------- Page head ---------- -->
+  <div class="page-head">
+    <div class="container">
+      <span class="page-head__eyebrow">The catalogue</span>
+      <h1 class="page-head__title">Shop Gift Cards</h1>
+      <p class="page-head__sub">
+        Every brand we carry — PlayStation, Xbox, Nintendo, Steam, Roblox,
+        Google Play and Apple. All prices shown in Ghana Cedis.
+      </p>
+    </div>
+  </div>
+
+  <div class="container section">
+
+    <!-- ---------- Toolbar: search + sort + count ---------- -->
+    <div class="shop-toolbar">
+
+      <div class="shop-search">
+        <svg class="shop-search__icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="search" id="shopSearch"
+               placeholder="Search gift cards…"
+               aria-label="Search gift cards">
+      </div>
+
+      <div class="shop-toolbar__right">
+        <span class="shop-count" id="shopCount"></span>
+
+        <label class="shop-sort">
+          <span class="shop-sort__label">Sort</span>
+          <select id="shopSort" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to high</option>
+            <option value="price-desc">Price: High to low</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- ---------- Category pills ---------- -->
+    <div class="shop-categories" id="shopCategories"
+         role="group" aria-label="Filter by brand"></div>
+
+    <!-- ---------- Product grid ---------- -->
+    <div class="product-grid" id="shopGrid"></div>
+
+    <!-- ---------- Empty state ---------- -->
+    <div class="shop-empty" id="shopEmpty" hidden>
+      <div class="shop-empty__icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h2 class="shop-empty__title">No gift cards found</h2>
+      <p class="shop-empty__text" id="shopEmptyText">
+        Try clearing your filters or searching for a different brand.
+      </p>
+      <button type="button" class="btn btn--secondary" id="shopClearFilters">
+        Clear filters
+      </button>
+    </div>
+
+  </div>
+
+</main>
+
+<footer id="siteFooter" class="site-footer"></footer>
+
+<!-- ==========================================================================
+     SCRIPTS
+     Shared scripts first (define window.GC / window.CATALOG), then this
+     page's script (registers window.PageInit.shop), then the router last.
+     ========================================================================== -->
+<script src="js/header.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/router.js"></script>
+
+
+</body>
+</html>
