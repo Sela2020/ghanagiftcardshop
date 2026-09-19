@@ -487,15 +487,46 @@
     const nav    = document.getElementById('primaryNav');
     if (!toggle || !nav) return;
 
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function openNav() {
+      nav.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    // Toggle on button click
     toggle.addEventListener('click', function () {
-      const open = nav.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(open));
+      if (nav.classList.contains('is-open')) closeNav();
+      else openNav();
     });
 
+    // Close when a link inside the nav is tapped (mobile only)
     nav.addEventListener('click', function (e) {
       if (e.target.closest('a') && window.innerWidth <= 960) {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+        closeNav();
+      }
+    });
+
+    // Close when the user scrolls the page
+    window.addEventListener('scroll', function () {
+      if (nav.classList.contains('is-open')) closeNav();
+    }, { passive: true });
+
+    // Close when the user taps outside the nav panel
+    document.addEventListener('click', function (e) {
+      if (!nav.classList.contains('is-open')) return;
+      if (nav.contains(e.target)) return;
+      if (toggle.contains(e.target)) return;
+      closeNav();
+    });
+
+    // Close when the viewport is resized to desktop width
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 960 && nav.classList.contains('is-open')) {
+        closeNav();
       }
     });
   }
