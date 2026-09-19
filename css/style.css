@@ -4235,3 +4235,170 @@ body.is-modal-open { overflow: hidden; }
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ==========================================================================
+   26c. CHECKOUT — MOBILE OPTIMIZATIONS
+   ------------------------------------------------------------------------
+   On phones and tablets:
+     • Order summary moves above the form
+     • Summary collapses into a toggle (shows total when closed)
+     • Sticky action bar at the bottom keeps "Place order" reachable
+     • Bigger tap targets on the delivery options
+   ========================================================================== */
+
+/* Collapsible summary toggle — hidden on desktop */
+.checkout-summary__toggle { display: none; }
+
+/* Mobile-only sticky action bar */
+.checkout-mobile-bar { display: none; }
+
+@media (max-width: 960px) {
+
+  /* ------ Layout: summary first, form second ------ */
+  .checkout-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  .checkout-layout > div     { order: 2; }   /* form column */
+  .checkout-layout > aside   { order: 1; }   /* summary */
+
+  /* ------ Summary becomes a collapsible card ------ */
+  .checkout-summary {
+    position: static;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .checkout-summary__toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    padding: var(--sp-4);
+    background: transparent;
+    border: 0;
+    color: var(--c-ink);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--dur) var(--ease);
+  }
+  .checkout-summary__toggle:hover { background: var(--c-surface-2); }
+  .checkout-summary__toggle:focus-visible {
+    outline: 2px solid var(--c-primary);
+    outline-offset: -2px;
+  }
+  .checkout-summary__toggle-title {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-width: 0;
+  }
+  .checkout-summary__toggle-title svg {
+    width: 16px;
+    height: 16px;
+    color: var(--c-muted);
+    flex-shrink: 0;
+  }
+  .checkout-summary__total-badge {
+    font-family: var(--font-mono);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--c-ink);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .checkout-summary__chevron {
+    width: 16px;
+    height: 16px;
+    color: var(--c-muted);
+    flex-shrink: 0;
+    transition: transform var(--dur) var(--ease);
+  }
+  .checkout-summary__toggle[aria-expanded="true"] .checkout-summary__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Body hidden until the toggle is expanded */
+  .checkout-summary__body { display: none; padding: 0 var(--sp-4) var(--sp-4); }
+  .checkout-summary__toggle[aria-expanded="true"] + .checkout-summary__body {
+    display: block;
+  }
+  .checkout-summary__title { display: none; } /* The toggle says it already */
+
+  /* ------ Bigger, thumb-friendly controls ------ */
+  .delivery-options { grid-template-columns: 1fr; }
+  .delivery-option { padding: var(--sp-4); }
+  .delivery-option__icon { width: 40px; height: 40px; }
+  .delivery-option__icon svg { width: 18px; height: 18px; }
+
+  .form-input {
+    padding: 0.8rem 0.9rem;
+    font-size: var(--fs-base);
+  }
+  .form-check input { width: 22px; height: 22px; }
+
+  /* Larger hit area for the back link */
+  .checkout-back { padding: 8px 0; }
+
+  /* Room for the sticky bar at the bottom so nothing is hidden behind it */
+  #main { padding-bottom: 96px; }
+
+  /* ------ Sticky action bar ------ */
+  .checkout-mobile-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--footer-h);
+    z-index: 95;
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--c-surface);
+    border-top: 1px solid var(--c-border);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+    animation: cmb-in 260ms var(--ease);
+  }
+  .checkout-mobile-bar__total { flex: 1; min-width: 0; }
+  .checkout-mobile-bar__label {
+    display: block;
+    font-size: var(--fs-2xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--c-muted);
+    font-weight: 600;
+  }
+  .checkout-mobile-bar__value {
+    display: block;
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: var(--c-ink);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .checkout-mobile-bar .btn {
+    flex-shrink: 0;
+    padding: 0.72rem 1.2rem;
+    font-size: var(--fs-sm);
+  }
+
+  @keyframes cmb-in {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+}
+
+/* Hide the sticky bar while a modal is open (matches the body lock) */
+body.is-modal-open .checkout-mobile-bar { display: none; }
+
+/* Very small phones: shrink the price slightly */
+@media (max-width: 380px) {
+  .checkout-mobile-bar__value { font-size: var(--fs-base); }
+  .checkout-mobile-bar .btn { padding: 0.65rem 1rem; }
+}
