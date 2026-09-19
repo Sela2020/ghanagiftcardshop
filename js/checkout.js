@@ -136,6 +136,13 @@ window.PageInit.checkout = function () {
     }
     if (els.subtotal) els.subtotal.textContent = GC.formatCurrency(total);
     if (els.total)    els.total.textContent = GC.formatCurrency(total);
+
+    // Mirror the total into the mobile bar and the summary badge
+    const formatted = GC.formatCurrency(total);
+    const barTotal = document.getElementById('mobileBarTotal');
+    if (barTotal) barTotal.textContent = formatted;
+    const badge = document.getElementById('summaryTotalBadge');
+    if (badge) badge.textContent = formatted;
   }
 
   /* ========================================================================
@@ -349,6 +356,7 @@ window.PageInit.checkout = function () {
     };
 
     els.submitBtn.disabled = true;
+    syncMobileSubmit(true);
     showProcessing();
 
     try {
@@ -370,6 +378,7 @@ window.PageInit.checkout = function () {
       console.error('[Checkout] Failed:', err);
       hideProcessing();
       els.submitBtn.disabled = false;
+      syncMobileSubmit(false);
       showAlert('error', err.message || 'Something went wrong. Please try again.');
     }
   }
@@ -412,10 +421,40 @@ window.PageInit.checkout = function () {
   }
 
   /* ========================================================================
-     12. INIT
+     12. SUMMARY TOGGLE (mobile)
+     ------------------------------------------------------------------------
+     On mobile the summary collapses into a button. The button is hidden on
+     desktop via CSS, so this handler is harmless there.
+     ======================================================================== */
+  function bindSummaryToggle() {
+    const toggle = document.getElementById('checkoutSummaryToggle');
+    if (!toggle) return;
+
+    toggle.addEventListener('click', function () {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+  }
+
+  /* ========================================================================
+     13. MOBILE ACTION BAR
+     ------------------------------------------------------------------------
+     The sticky bar at the bottom shows the total and a Place Order button.
+     The button lives outside the form but uses the form="checkoutForm"
+     attribute to submit it. We just need to keep its disabled state in sync
+     with the main submit button.
+     ======================================================================== */
+  function syncMobileSubmit(disabled) {
+    const btn = document.getElementById('mobileSubmitBtn');
+    if (btn) btn.disabled = !!disabled;
+  }
+
+  /* ========================================================================
+     14. INIT
      ======================================================================== */
   renderSummary();
   prefill();
+  bindSummaryToggle();
 
   // If cart is empty, don't wire the form
   if (!GC.getCart().length) return;
