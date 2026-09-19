@@ -10,6 +10,12 @@
        ]
      }
    `codes` is present for completed orders only.
+
+   Mobile:
+     Under 720px the orders table is restyled into cards via CSS. Each <td>
+     carries a data-label attribute so the CSS `::before` can display the
+     column name above the value. Do not remove the data-label attributes
+     without updating the CSS.
    ========================================================================== */
 
 window.PageInit = window.PageInit || {};
@@ -49,9 +55,8 @@ window.PageInit.dashboard = function () {
   /* ========================================================================
      1. DEMO DATA
      ------------------------------------------------------------------------
-     Completed orders have a `codes` array on each item. Pending and
-     cancelled orders do not. Delete this whole function (and its call in
-     init) once api/orders.php returns real data.
+     Delete this whole function (and its call in init) once api/orders.php
+     returns real data.
      ======================================================================== */
   function seedDemoOrders() {
     if (localStorage.getItem(ORDERS_KEY)) return;
@@ -299,7 +304,6 @@ window.PageInit.dashboard = function () {
    * that opens the modal.
    */
   function codesCell(order) {
-    // No codes yet
     if (!orderHasCodes(order)) {
       if (order.status === 'pending') {
         return '<span class="codes-pending">Processing</span>';
@@ -363,14 +367,23 @@ window.PageInit.dashboard = function () {
     els.tbody.innerHTML = visible.map(function (order) {
       return (
         '<tr>' +
-          '<td class="is-mono">' + esc(order.id) + '</td>' +
-          '<td class="u-text-muted">' + formatDate(order.date) + '</td>' +
-          '<td>' + itemsCell(order) + '</td>' +
-          '<td class="is-numeric">' + cardCount(order) + '</td>' +
-          '<td class="is-numeric is-strong">' +
-            GC.formatCurrency(order.total) + '</td>' +
-          '<td>' + statusBadge(order.status) + '</td>' +
-          '<td class="is-numeric">' + codesCell(order) + '</td>' +
+          '<td class="is-mono" data-label="Order">' +
+            esc(order.id) +
+          '</td>' +
+          '<td class="u-text-muted" data-label="Date">' +
+            formatDate(order.date) +
+          '</td>' +
+          '<td data-label="Items">' + itemsCell(order) + '</td>' +
+          '<td class="is-numeric" data-label="Cards">' +
+            cardCount(order) +
+          '</td>' +
+          '<td class="is-numeric is-strong" data-label="Total">' +
+            GC.formatCurrency(order.total) +
+          '</td>' +
+          '<td data-label="Status">' + statusBadge(order.status) + '</td>' +
+          '<td class="is-numeric" data-label="Codes">' +
+            codesCell(order) +
+          '</td>' +
         '</tr>'
       );
     }).join('');
@@ -393,10 +406,6 @@ window.PageInit.dashboard = function () {
 
   /* ========================================================================
      7. CODES MODAL
-     ------------------------------------------------------------------------
-     Opens when an order has more than 2 codes, or from a "+N more" button.
-     Also used to redeem instructions. Codes shown inline in the table
-     are the primary path; this is the fallback for larger orders.
      ======================================================================== */
   let activeModal = null;
   let modalReturnFocus = null;
@@ -470,7 +479,6 @@ window.PageInit.dashboard = function () {
       return;
     }
 
-    // Focus trap
     if (e.key !== 'Tab') return;
     const focusables = activeModal.querySelectorAll(
       'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -536,7 +544,6 @@ window.PageInit.dashboard = function () {
       if (e.target === backdrop) dismissCodesModal();
     });
 
-    // Copy buttons inside the modal
     backdrop.querySelectorAll('.code-row__copy').forEach(function (btn) {
       btn.addEventListener('click', function () {
         const code = btn.getAttribute('data-code');
